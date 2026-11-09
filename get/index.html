@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Get TTG - Through The Galaxies</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Download TTG - Through The Galaxies on Google Play or the App Store.">
+  <link rel="icon" type="image/png" href="../assets/img/logo-64.png" sizes="64x64">
+  <link rel="canonical" href="https://ttg.app2pack.dev/get/">
+  <script>
+    (function () {
+      var PLAY = 'https://play.google.com/store/apps/details?id=dev.app2pack.ttg';
+      var APP_STORE = 'https://apps.apple.com/app/ttg-through-the-galaxy/id6444870791';
+      var ua = navigator.userAgent || '';
+      // iPadOS reports itself as a Mac, so also check for touch.
+      var isIOS = /iPhone|iPad|iPod/i.test(ua) ||
+        (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+      var isAndroid = /Android/i.test(ua);
+      if (isIOS) location.replace(APP_STORE);
+      else if (isAndroid) location.replace(PLAY);
+      else location.replace('/');
+    })();
+  </script>
+  <style>
+    html, body { margin: 0; height: 100%; }
+    body {
+      background: #1d134d;
+      color: #F6F2FF;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 16px;
+      box-sizing: border-box;
+    }
+    img.logo { width: 160px; height: 160px; border-radius: 36px; }
+    h1 { font-size: 28px; margin: 24px 0; }
+    .stores { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+    .stores img { height: 52px; }
+    a.home { color: #BDB2E2; margin-top: 24px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <img class="logo" src="../assets/img/logo-180.png" alt="TTG">
+  <h1>TTG - Through The Galaxies</h1>
+  <div class="stores">
+    <a href="https://play.google.com/store/apps/details?id=dev.app2pack.ttg"><img src="../assets/img/google-play.png" alt="Get it on Google Play"></a>
+    <a href="https://apps.apple.com/app/ttg-through-the-galaxy/id6444870791"><img src="../assets/img/app-store.png" alt="Download on the App Store"></a>
+  </div>
+  <a class="home" href="../">ttg.app2pack.dev</a>
+</body>
+</html>

@@ -1,83 +1,235 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>TTG - Through The Galaxies</title>
-    <style>
-        body {
-          font-family: Arial, sans-serif;
-          padding: 0;
-          margin: 0;
-          background-color: #f0f0f0;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          min-height: 100vh;
-        }
-        .container {
-          max-width: 800px;
-          padding: 20px;
-          text-align: center;
-          display: grid;
-          grid-gap: 20px;
-          justify-items: center;
-          align-content: center;
-        }
-        .logo img {
-          width: 30%;
-        }
-        .screenshots {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 20px;
-        }
-        .screenshots img {
-          max-width: 100%;
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-          border-radius: 10px;
-        }
-        .links {
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-          gap: 10px;
-        }
-        .links img {
-          width: 120px;
-        }
-        .privacy {
-          margin: 20px 0;
-        }
-        @media screen and (max-width: 600px) {
-          .links {
-            flex-direction: column;
-          }
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TTG - Through The Galaxies</title>
+
+<meta name="description" content="One tap launches your rocket to the next planet. Fly through four galaxies in TTG, free on Google Play and the App Store.">
+<meta name="keywords" content="TTG, Through The Galaxies, mobile game, casual game, space game, rocket game, flame engine, flutter">
+<meta name="author" content="App2Pack">
+<meta name="theme-color" content="#1d134d">
+
+<!-- Twitter Card data -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@imaNNeo">
+<meta name="twitter:title" content="TTG - Through The Galaxies">
+<meta name="twitter:description" content="One tap launches your rocket to the next planet. How far into space can you get?">
+<meta name="twitter:image" content="https://ttg.app2pack.dev/assets/img/og.png">
+
+<!-- Open Graph data -->
+<meta property="og:url" content="https://ttg.app2pack.dev/">
+<meta property="og:site_name" content="TTG - Through The Galaxies">
+<meta property="og:type" content="website">
+<meta property="og:title" content="TTG - Through The Galaxies">
+<meta property="og:description" content="One tap launches your rocket to the next planet. How far into space can you get?">
+<meta property="og:image" content="https://ttg.app2pack.dev/assets/img/og.png">
+<meta property="og:image:alt" content="The TTG rocket lifting off a bank of clouds between planets">
+
+<link rel="icon" type="image/png" href="assets/img/logo-64.png" sizes="64x64">
+<link rel="apple-touch-icon" href="assets/img/logo-180.png">
+<link rel="canonical" href="https://ttg.app2pack.dev/">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Inter:wght@400;600;800&display=swap">
+<style>
+  /* The app icon, brought to life: a centered title, then the big rocket
+     lifting off a bank of clouds with planets drifting around it. The
+     clouds become the light band that holds the screenshots and video. */
+  :root {
+    --night: #1d134d;
+    --ink: #F6F2FF;
+    --muted: #BDB2E2;
+    --rose: #FF7A90;
+    --cloud: #BFE3F0;
+    --cloud-ink: #1d134d;
+    --cloud-muted: #4a3f80;
+    --display: "Baloo 2", "Arial Rounded MT Bold", system-ui, sans-serif;
+    --body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { background: var(--night); }
+  body { margin: 0; background: var(--night); color: var(--ink); font: 17px/1.6 var(--body); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  #sky { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
+  main, footer { position: relative; z-index: 1; }
+  .pad { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+  .hero { display: grid; justify-items: center; text-align: center; gap: 16px; padding-block: max(56px, env(safe-area-inset-top, 0px)) 0; }
+  .eyebrow { margin: 0; font-size: 12px; font-weight: 800; letter-spacing: .3em; color: var(--muted); }
+  h1 { margin: 0; font: 800 clamp(46px, 9vw, 104px)/.9 var(--display); letter-spacing: -.015em; text-wrap: balance; }
+  h1 span { color: var(--rose); text-shadow: 0 0 34px rgba(255, 90, 130, .5); }
+  .tag { margin: 0; color: var(--muted); font-size: clamp(17px, 2.2vw, 20px); max-width: 34ch; text-wrap: balance; }
+  .stores { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 6px; position: relative; z-index: 2; }
+  .stores a { display: block; border-radius: 10px; transition: transform .2s ease; }
+  .stores a:hover { transform: translateY(-3px) scale(1.03); }
+  .stores a:focus-visible, .row button:focus-visible, .player .close:focus-visible { outline: 3px solid var(--rose); outline-offset: 4px; }
+  .stores img { display: block; height: 54px; width: auto; }
+
+  .scene { position: relative; width: 100%; height: clamp(380px, 52vw, 560px); margin-top: -40px; }
+  .scene canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+  .band { background: var(--cloud); color: var(--cloud-ink); text-align: center; padding-block: 8px 64px; display: grid; justify-items: center; gap: 56px; }
+  .band section { width: 100%; display: grid; justify-items: center; gap: 24px; }
+  .band h2 { margin: 0; font: 800 clamp(28px, 4vw, 40px)/1 var(--display); text-wrap: balance; }
+  .row button { all: unset; flex: 0 0 auto; position: relative; display: block; cursor: pointer; border-radius: 22px; scroll-snap-align: center; }
+  .row button img { display: block; }
+  .row button { transition: transform .2s ease; }
+  .row button:hover { transform: translateY(-4px); }
+  .player { width: min(960px, calc(100% - 32px)); padding: 0; border: 0; border-radius: 20px; overflow: hidden; background: #000; }
+  .player::backdrop { background: rgba(8, 5, 26, .85); }
+  .player .frame { position: relative; aspect-ratio: 16 / 9; }
+  .player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .player .close { position: absolute; top: 10px; right: 10px; z-index: 1; width: 40px; height: 40px; border: 0; border-radius: 50%; background: rgba(0, 0, 0, .6); color: #fff; font: 700 22px/1 var(--body); cursor: pointer; }
+  .row { display: flex; justify-content: center; gap: 18px; max-width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 4px 18px; }
+  .row img { flex: 0 0 auto; width: 220px; max-width: 62vw; height: auto; aspect-ratio: 540 / 1140; border-radius: 22px; scroll-snap-align: center; box-shadow: 0 18px 40px rgba(29, 19, 77, .35); }
+
+  footer { background: var(--cloud); color: var(--cloud-muted); text-align: center; font-size: 14px; padding-block: 8px max(36px, env(safe-area-inset-bottom, 0px)); }
+  footer nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 20px; margin-bottom: 8px; }
+  footer a { color: var(--cloud-ink); text-decoration: none; border-bottom: 1px solid rgba(29, 19, 77, .3); font-weight: 600; }
+  footer a:hover { border-color: var(--cloud-ink); }
+
+  @media (max-width: 860px) { .row { justify-content: flex-start; } }
+  @media (max-width: 420px) { .stores img { height: 46px; } }
+</style>
 </head>
 <body>
-<div class="container">
-    <h2>Welcome to Through The Galaxies!</h2>
-    <div class="logo">
-        <img src="assets/TTG-Logo.png" alt="TTG - Through The Galaxies logo">
+<canvas id="sky" aria-hidden="true"></canvas>
+<main>
+  <section class="hero pad">
+    <p class="eyebrow">VERSION 3.0 IS OUT</p>
+    <h1>Through the <span>Galaxies</span></h1>
+    <p class="tag">One tap launches your rocket to the next planet. How far into space can you get?</p>
+    <div class="stores" id="stores">
+      <a href="https://play.google.com/store/apps/details?id=dev.app2pack.ttg" target="_blank" rel="noopener"><img src="assets/img/google-play.webp" width="183" height="54" alt="Get it on Google Play"></a>
+      <a href="https://apps.apple.com/app/ttg-through-the-galaxy/id6444870791" target="_blank" rel="noopener"><img src="assets/img/app-store.webp" width="183" height="54" alt="Download on the App Store"></a>
     </div>
-    <div class="links">
-        <a href="https://play.google.com/store/apps/details?id=dev.app2pack.ttg" target="_blank"><img
-                src="assets/google-play.svg" alt="Get it on Google Play"></a>
-        <a href="https://apps.apple.com/app/ttg-through-the-galaxy/id6444870791" target="_blank"><img
-                src="assets/app-store.svg" alt="Download on the App Store"></a>
-    </div>
-    <p>Join us in a cosmic adventure and explore the universe like never before.</p>
-    <div class="screenshots">
-        <a href="https://www.youtube.com/watch?v=RMPU3wowAqw"><img src="https://github.com/app2pack-dev/ttg_web/blob/main/assets/screenshots/ttg-screen1.png?raw=true"
-                        alt="TTG Screenshot 1"></a>
-        <img src="https://github.com/app2pack-dev/ttg_web/blob/main/assets/screenshots/ttg-screen2.png?raw=true"
-             alt="TTG Screenshot 2">
-        <img src="https://github.com/app2pack-dev/ttg_web/blob/main/assets/screenshots/ttg-screen3.png?raw=true"
-             alt="TTG Screenshot 3">
-    </div>
-    <div class="privacy">
-        <a href="privacy.html" target="_blank">Privacy Policy</a>
-    </div>
-</div>
+  </section>
+  <div class="scene" id="scene"><canvas id="lift" role="img" aria-label="The TTG rocket lifting off a bank of clouds, with planets drifting around it"></canvas></div>
+  <div class="band pad">
+    <section>
+      <h2>See it in action</h2>
+      <div class="row">
+        <button type="button" id="watch" aria-label="Watch the TTG gameplay video"><img src="assets/screenshots/ttg-screen1.webp" width="540" height="1140" loading="lazy" alt="Gameplay: the rocket on earth with planets worth +1, +5 and +10 above it"></button>
+        <img src="assets/screenshots/ttg-screen2.webp" width="540" height="1140" loading="lazy" alt="The pause screen with your best score">
+        <img src="assets/screenshots/ttg-screen3.webp" width="540" height="1140" loading="lazy" alt="Choose your rocket: six rockets to unlock with TTGems">
+      </div>
+    </section>
+  </div>
+  <dialog class="player" id="player" aria-label="TTG gameplay video">
+    <button class="close" id="close" type="button" aria-label="Close the video">×</button>
+    <div class="frame" id="frame"></div>
+  </dialog>
+</main>
+<footer class="pad">
+  <nav>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="support.html">Support</a>
+  </nav>
+  <div>Made with Flutter and Flame.</div>
+</footer>
+
+<script src="assets/js/ttg-art.js" data-img="assets/img/"></script>
+<script>
+(function () {
+  'use strict';
+  var TAU = Math.PI * 2;
+  var sky = new TTG.Sky(document.getElementById('sky'), { firstShoot: 4 });
+  var scene = document.getElementById('scene'), cv = document.getElementById('lift'), ctx = cv.getContext('2d');
+  var reduce = TTG.reduced();
+  var rocket = TTG.img('rocket/big1.webp');
+  var parts = new TTG.Particles();
+
+  // The YouTube player loads only when the video is opened, and stops when
+  // it's closed. Without <dialog> support, the link opens YouTube instead.
+  var player = document.getElementById('player'), frame = document.getElementById('frame');
+  document.getElementById('watch').addEventListener('click', function () {
+    if (!player.showModal) { window.open('https://www.youtube.com/watch?v=RMPU3wowAqw', '_blank', 'noopener'); return; }
+    var f = document.createElement('iframe');
+    f.src = 'https://www.youtube-nocookie.com/embed/RMPU3wowAqw?autoplay=1&rel=0';
+    f.title = 'TTG gameplay video';
+    f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+    f.allowFullscreen = true;
+    frame.appendChild(f);
+    player.showModal();
+  });
+  document.getElementById('close').addEventListener('click', function () { player.close(); });
+  player.addEventListener('click', function (e) { if (e.target === player) player.close(); });
+  player.addEventListener('close', function () { frame.innerHTML = ''; });
+
+  // Decorative planets around the rocket: x, y in scene fractions, size, depth.
+  var decor = [
+    { p: new TTG.Planet({ skin: 'earth' }), x: 0.2, y: 0.3, r: 0.07, z: 0.6 },
+    { p: new TTG.Planet({ skin: 'classic', color: '#bd4fda', shade: 2 }), x: 0.84, y: 0.2, r: 0.06, z: 0.8 },
+    { p: new TTG.Planet({ skin: 'classic', color: '#fdb979', shade: 5 }), x: 0.1, y: 0.62, r: 0.035, z: 0.3 },
+    { p: new TTG.Planet({ skin: 'donut', color: '#FF6FB5', seed: 6 }), x: 0.72, y: 0.5, r: 0.04, z: 0.45 },
+    { p: new TTG.Planet({ skin: 'crystal', color: '#9BE7FF', seed: 3 }), x: 0.33, y: 0.08, r: 0.028, z: 0.25 },
+    { p: new TTG.Planet({ skin: 'classic', color: '#f4e8dc', shade: 8 }), x: 0.93, y: 0.62, r: 0.03, z: 0.3 }
+  ];
+  // The cloud bank: puffs along the bottom, each with its own breathing.
+  var puffs = [];
+  var R0 = TTG.rng(7);
+  for (var i = 0; i < 26; i++) puffs.push({ x: i / 25, r: 0.05 + R0() * 0.06, ph: R0() * TAU, row: R0() < 0.5 ? 0 : 1 });
+
+  // Hovering a store button fires up the engine and the stars streak past.
+  var boost = 0, boostTarget = 0, mx = 0, my = 0;
+  document.querySelectorAll('#stores a').forEach(function (a) {
+    function on() { boostTarget = 1; }
+    function off() { boostTarget = 0; }
+    a.addEventListener('pointerenter', on); a.addEventListener('pointerleave', off);
+    a.addEventListener('focus', on); a.addEventListener('blur', off);
+  });
+  addEventListener('pointermove', function (e) { mx = e.clientX / innerWidth - 0.5; my = e.clientY / innerHeight - 0.5; }, { passive: true });
+
+  TTG.loop(function (t, dt) {
+    boost += (boostTarget - boost) * (1 - Math.exp(-dt * 4));
+    sky.trail[1] = reduce ? 0 : boost * 30;
+    sky.scroll[1] -= dt * (12 + boost * 400);
+    sky.render(t, dt);
+
+    var W = scene.clientWidth, H = scene.clientHeight, dpr = Math.min(devicePixelRatio || 1, 2);
+    if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    var S = Math.min(W, H * 1.6);
+
+    decor.forEach(function (d, k) {
+      var bob = reduce ? 0 : Math.sin(t * 0.6 + k * 1.7) * 8;
+      var x = d.x * W - mx * 40 * d.z, y = d.y * H + bob - my * 30 * d.z + (reduce ? 0 : boost * 60 * d.z);
+      d.p.draw(ctx, x, y, d.r * S, t, t * 0.2 * (k % 2 ? 1 : -1));
+    });
+
+    // Rocket and flame. The rocket only floats up and down.
+    var rh = Math.min(H * 0.62, 340), rw = rh * 270 / 508;
+    var cx = W / 2, lift = reduce ? 0 : Math.sin(t * 1.3) * 6 + boost * 26;
+    var rb = H * 0.76 - lift;
+    if (!reduce) {
+      for (var k = 0; k < 3 + boost * 4; k++) {
+        parts.emit(cx + (Math.random() - .5) * rw * 0.18, rb - rh * 0.02, (Math.random() - .5) * 60, 160 + Math.random() * 120 + boost * 260, 0.5 + boost * 0.3, 5 + boost * 5 + Math.random() * 4, Math.random() < 0.5 ? '#ffd27a' : '#ff8a5c');
+      }
+    }
+    parts.update(dt); parts.draw(ctx);
+    if (TTG.ready(rocket)) ctx.drawImage(rocket, cx - rw / 2, rb - rh, rw, rh);
+
+    // Clouds, like the app icon, drawn last so they cover the plume.
+    [0, 1].forEach(function (row) {
+      ctx.fillStyle = row ? '#BFE3F0' : '#8FC5DA';
+      ctx.beginPath();
+      puffs.forEach(function (p) {
+        if (p.row !== row && row === 0) return;
+        var breathe = reduce ? 1 : 1 + 0.06 * Math.sin(t * 1.1 + p.ph) + boost * 0.05;
+        var r = p.r * S * breathe * (row ? 1 : 1.25);
+        var y = H - (row ? 0.05 : 0.12) * H - r * 0.3;
+        ctx.moveTo(p.x * W + r, y);
+        ctx.arc(p.x * W, y, r, 0, TAU);
+      });
+      ctx.rect(0, H - (row ? 0.06 : 0.14) * H, W, H);
+      ctx.fill();
+    });
+  });
+})();
+</script>
 </body>
 </html>
